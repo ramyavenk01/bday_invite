@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Invitation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://tse3.mm.bing.net/th?id=OIP.e6A-U6xGhZnK1xxYNorzsgHaEK&pid=Api&P=0&h=180') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Great Vibes', cursive;
+            color: #fff;
+        }
+        .message-box {
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            width: 300px;
+        }
+        button {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5em;
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #fff;
+            color: #ff7e5f;
+        }
+        .hidden {
+            display: none;
+        }
+        .cute-image {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <h1>Can you make time for my birthday?</h1>
+        <button id="yesBtn">Yes</button>
+        <button id="maybeBtn">Maybe</button>
+        <button id="noBtn">No</button>
+        
+        <div id="yesMessage" class="hidden">
+            <h2>Yayyy! See you soon!</h2>
+            <img class="cute-image" src="https://img.freepik.com/premium-photo/cute-kawaii-girl-casual-fashion-generative-ai_755833-78.jpg?w=740" alt="Cute Image">
+        </div>
+        
+        <div id="noMessage" class="hidden">
+            <button id="pleejBtn">Plese?</button>
+        </div>
+        
+        <div id="pleejMessage" class="hidden">
+            <button id="prettyPleaseBtn">Pretty please?</button>
+        </div>
+        
+        <div id="prettyPleaseMessage" class="hidden">
+            <button id="pwetyPweaseBtn">Pwetty pwease?</button>
+        </div>
+        
+        <div id="pwetyPweaseMessage" class="hidden">
+            <button id="friendTimeBtn">Can't spend a few hours for your friend?</button>
+        </div>
+    </div>
+
+    <script>
+        const yesMessageHTML = document.getElementById('yesMessage').innerHTML;
+
+        function showYesMessage() {
+            document.querySelector('.message-box').innerHTML = yesMessageHTML;
+        }
+
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            saveResponse('yes');
+            showYesMessage();
+        });
+
+        document.getElementById('maybeBtn').addEventListener('click', function() {
+            saveResponse('maybe');
+            document.getElementById('maybeBtn').classList.add('hidden');
+        });
+
+        document.getElementById('noBtn').addEventListener('click', function() {
+            saveResponse('no');
+            document.getElementById('noBtn').classList.add('hidden');
+            document.getElementById('noMessage').classList.remove('hidden');
+        });
+
+        document.getElementById('pleejBtn').addEventListener('click', function() {
+            document.getElementById('pleejBtn').classList.add('hidden');
+            document.getElementById('pleejMessage').classList.remove('hidden');
+        });
+
+        document.getElementById('prettyPleaseBtn').addEventListener('click', function() {
+            document.getElementById('prettyPleaseBtn').classList.add('hidden');
+            document.getElementById('prettyPleaseMessage').classList.remove('hidden');
+        });
+
+        document.getElementById('pwetyPweaseBtn').addEventListener('click', function() {
+            document.getElementById('pwetyPweaseBtn').classList.add('hidden');
+            document.getElementById('pwetyPweaseMessage').classList.remove('hidden');
+        });
+
+        document.getElementById('friendTimeBtn').addEventListener('click', function() {
+            document.getElementById('friendTimeBtn').classList.add('hidden');
+            document.getElementById('yesBtn').classList.remove('hidden');
+        });
+
+        function saveResponse(response) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("response=" + response);
+        }
+    </script>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = isset($_COOKIE['name']) ? htmlspecialchars($_COOKIE['name']) : 'Anonymous';
+        $response = htmlspecialchars($_POST['response']);
+        $file = 'responses.txt';
+        $data = $name . " - " . $response . PHP_EOL;
+        file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+        exit();
+    }
+    ?>
+</body>
+</html>
